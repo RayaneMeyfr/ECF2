@@ -20,12 +20,13 @@ import java.util.Optional;
 public class TravellogsService {
     TravellogRepository travellogRepository;
 
-    public TravellogDtoResponse create(TravellogDtoReceive travellogDtoReceive) {
-        return travellogRepository.save(travellogDtoReceive.dtoToEntity()).entityToDto();
-    }
 
     public TravellogsService(TravellogRepository travellogRepository) {
         this.travellogRepository = travellogRepository;
+    }
+
+    public TravellogDtoResponse create(TravellogDtoReceive travellogDtoReceive) {
+        return travellogRepository.save(travellogDtoReceive.dtoToEntity()).entityToDto();
     }
 
     public TravellogDtoStat getStat(Long id) {

@@ -1,156 +1,94 @@
-# **Sujet ECF 1 – CDA**
+# **Sujet ECF 2 – CDA**
 
 ## **Contexte**
 
-Une application Java permettant de signaler et de visualiser des observations d’espèces dans la nature a été en grande partie développée.
-Votre mission est de **compléter la modélisation et certaines parties du code** pour finaliser l’application.
+Une application Java permettant de signaler et de visualiser des observations d’espèces dans la nature a été en grande partie développée.  
+Votre mission est de **compléter la modélisation et certaines parties du code** afin de finaliser l’application.  
 
 ---
 
-## **1. Objectifs**
+## **Travail réalisé**
 
-Vous devez :
-
-1. **Compléter la modélisation** (diagramme UML et MLD) à partir des spécifications fournies.
-2. **Compléter certaines classes Java** manquantes ou incomplètes pour assurer le bon fonctionnement de l’application.
-3. **Vérifier et compléter la logique métier**, notamment le calcul des émissions de CO₂.
+Pour cette ECF2, j’ai dû effectuer plusieurs tâches afin de compléter le travail déjà partiellement accompli.  
 
 ---
 
-## **2. Pré-requis techniques**
+### **Outils utilisés**
 
-* **Java**
-* **Maven**
-* **MySQL**
+- **Draw.io** : pour compléter les schémas (format initial déjà en `.drawio`).  
+- **Git** : pour le dépôt et le suivi de version du projet.  
+- **IntelliJ IDEA** : IDE pour le développement Java.  
+- **MySQL & Wamp** : pour la gestion et l’hébergement de la base de données.  
+- **Postman** : pour tester les différentes routes de l’API.  
 
-  * Créer une base de données nommée **`environement_db`**
-  * Utilisateur par défaut : `root`
-  * Mot de passe : vide (ou votre configuration locale)
-* Un outil UML pour compléter les fichiers fournis :
-  * Les fichiers UML et MLD se trouvent dans à la racine du dépôt
-
+⚠️ **Précision** :  
+La version du projet a été adaptée à **Java 21** (initialement Java 22) car cette dernière causait des problèmes de lancement sur ma configuration locale.  
 
 ---
 
-## **3. Partie modélisation**
-
-* **Compléter le diagramme de classes UML** partiellement rempli.
-* **Compléter le MLD** (Modèle Logique de Données) en respectant :
-
-  * Les types
-  * Les relations
-  * Les cardinalités
+### **Diagramme UML**
+- Complétion de la table `travel_log` qui était vide.  
+- Ajout des cardinalités entre les différentes tables.  
+- Ajout de verbes pour préciser les relations.  
 
 ---
 
-## **4. Partie développement**
-
-Dans le code fourni :
-
-1. **Compléter les classes manquantes** décrites dans les spécifications (voir entités plus bas).
-2. **Compléter les endpoints REST** inachevés
-
----
-
-## **5. Spécifications fonctionnelles utiles**
-
-### **Entités**
-
-#### Espèce (`Specie`)
-
-* id : Long
-* commonName : String
-* scientificName : String
-* category : Category (enum)
-
-#### Enum `Category`
-
-```java
-public enum Category {
-    BIRD, MAMMAL, INSECT, PLANT, OTHER
-}
-```
-
-#### Observation (`Observation`)
-
-* id : Long
-* specie : Specie
-* observerName : String
-* location : String
-* latitude / longitude : Double
-* observationDate : LocalDate
-* comment : String (optionnel)
-
-#### Déplacement (`TravelLog`)
-
-* id : Long
-* observation : Observation
-* distanceKm : Double
-* mode : TravelMode (enum)
-* estimatedCo2Kg : Double
-
-#### Enum `TravelMode`
-
-```java
-public enum TravelMode {
-    WALKING, BIKE, CAR, BUS, TRAIN, PLANE
-}
-```
+### **Diagramme de classes**
+- Complétion de la classe `Travellog` qui était totalement vide (ajout des variables et des différentes méthodes).  
+- Complétion de la classe `SpecieDtoReceive` (ajout des variables et des méthodes) + définition de la relation et des cardinalités manquantes.  
+- Complétion de la classe `TravellogStat` (ajout des variables et des méthodes).  
+- Ajout de la méthode `create` dans la classe `TravellogsService`.  
+- Ajout de deux méthodes dans la classe `TravelLogController` :  
+  - `get` : pour récupérer tous les `travellogs`.  
+  - `create` : pour ajouter un `travellog`.  
+- Ajout des méthodes dans la classe `SpecieController` :  
+  - `getSpecies`  
+  - `getSpeciesById`  
+  - `createSpecies`  
+- Ajout des méthodes dans `ObservationRepository` :  
+  - `findObservationByLocationIsLike`  
+  - `findObservationBySpecieId`  
 
 ---
 
-## **6. Facteurs d’émission CO₂**
+### **Code**
 
-| Mode de transport | Émission CO₂ (kg/km) |
-| ----------------- | -------------------- |
-| Walking / Bike    | 0                    |
-| Car               | 0.22                 |
-| Bus               | 0.11                 |
-| Train             | 0.03                 |
-| Plane             | 0.259                |
+Pour la partie développement, j’ai procédé en plusieurs étapes :  
 
-Formule :
-
-```
-estimatedCo2Kg = distanceKm × facteurEmission
-```
+1. **Analyse du code existant** afin d’identifier les manques et les classes à compléter.  
+2. Modification du fichier **`application.properties`** (configuration de la base de données et du mot de passe).  
+3. Création de la classe **`Travellog`** (n’existait pas) en suivant le diagramme de classes + ajout des méthodes `entityToDto` et `calculateCO2`.  
+4. Décommentaire des lignes dans **`TravellogRepository`** pour permettre l’utilisation des méthodes dans le service.  
+5. Création du service **`TravellogsService`** avec l’ensemble des méthodes demandées :  
+   - `create`  
+   - `get`  
+   - `getStat`  
+   - `getStatForUserLastMonth`  
+6. Ajout de la méthode manquante `create` dans la classe **`TravellogController`**.  
+7. Création et complétion de **`ObservationRepository`** avec les méthodes manquantes :  
+   - `findObservationByLocationIsLike`  
+   - `findObservationBySpecieId`  
+8. Création de la classe **`ObservationController`** avec toutes ses routes et méthodes associées.  
+9. **Tests de l’application** : lancement du projet, création de différentes espèces, d’observations et de déplacements pour valider le bon fonctionnement.  
 
 ---
 
-## **7. Endpoints REST CO₂**
+### **Fonctionnalités**
 
-##### Espèces
+#### Espèces
+- Voir toutes les espèces  
+- Récupérer une espèce par son ID  
+- Créer une espèce  
 
-* `GET /species` → Liste des espèces connues
-* `POST /species` → Ajouter une espèce
-* `GET /species/{id}` → Détails d’une espèce
+#### Observations
+- Créer une observation  
+- Récupérer toutes les observations  
+- Récupérer une observation par son ID  
+- Récupérer les observations par localisation  
+- Récupérer les observations par espèce  
 
-##### Observations
-
-* `GET /observations` → Toutes les observations (avec filtres possibles)
-* `POST /observations` → Ajouter une observation
-* `GET /observations/{id}` → Voir une observation
-* `GET /observations/by-location?location=Paris` → Filtrer par lieu
-* `GET /observations/by-species/{speciesId}` → Filtrer par espèce
-
-#####  Déplacement
-* `POST /travel-logs`
-  Créer un déplacement lié à une observation (inclut le calcul CO₂).
-* `GET /travel-logs`
-  Liste des déplacements + émissions totales CO₂.
-* `GET /travel-logs/stats/{idObservation}`
-  Renvoie :
-
-  ```json
-  {
-    "totalDistanceKm": 45.5,
-    "totalEmissionsKg": 8.4,
-    "byMode": {
-      "CAR": 5.5,
-      "TRAIN": 2.9
-    }
-  }
----
-
-**Dépôt Git** : [https://github.com/utopios/ECF_05_AOUT_2025.git/](https://github.com/utopios/ECF_05_AOUT_2025.git/)
-
+#### TravelLogs
+- Créer un `travelLog`  
+- Récupérer tous les `travelLogs`  
+- Récupérer les statistiques d’un `travelLog` via son ID  
+- Récupérer les statistiques de plusieurs `travelLogs` en fonction du nom de l’observateur  

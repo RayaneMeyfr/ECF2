@@ -12,7 +12,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/observations")
 public class ObservationController {
-    private ObservationService observationService;
+    private final ObservationService observationService;
 
     public ObservationController(ObservationService observationService) {
         this.observationService = observationService;
