@@ -1,14 +1,14 @@
 package org.example.environement.controller;
 
+import org.example.environement.dto.travellogs.TravellogDtoReceive;
 import org.example.environement.dto.travellogs.TravellogDtoResponse;
 import org.example.environement.dto.travellogs.TravellogDtoStat;
+import org.example.environement.entity.Travellog;
 import org.example.environement.service.TravellogsService;
 import org.springframework.beans.propertyeditors.LocaleEditor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -38,5 +38,10 @@ public class TravellogController {
     @GetMapping("/user/{name}")
     public ResponseEntity<Map<String,TravellogDtoStat>> getTravelStatForUserOnLAstMonth (@PathVariable String name){
         return ResponseEntity.ok(travellogsService.getStatForUserLastMonth(name));
+    }
+
+    @PostMapping
+    public ResponseEntity<TravellogDtoResponse> create(@RequestBody TravellogDtoReceive travellogDtoReceive) {
+        return ResponseEntity.status(HttpStatus.CREATED).body(travellogsService.create(travellogDtoReceive));
     }
 }

@@ -29,12 +29,12 @@ public class Travellog {
     private TravelMode mode;
     private Double estimatedCo2Kg;
 
-    public TravellogDtoResponse entityToDto(Travellog entity) {
+    public TravellogDtoResponse entityToDto() {
         return TravellogDtoResponse.builder()
-                .id(this.id)
-                .distanceKm(this.distanceKm)
-                .mode(this.mode.toString())
-                .estimatedCo2Kg(this.estimatedCo2Kg)
+                .id(this.getId())
+                .distanceKm(this.getDistanceKm())
+                .mode(this.getMode().toString())
+                .estimatedCo2Kg(this.getEstimatedCo2Kg())
                 .build();
     }
 
