@@ -2,10 +2,6 @@ package org.example.environement.controller;
 
 import org.example.environement.dto.observation.ObservationDtoReceive;
 import org.example.environement.dto.observation.ObservationDtoResponse;
-import org.example.environement.dto.specie.SpecieDtoResponse;
-import org.example.environement.dto.travellogs.TravellogDtoReceive;
-import org.example.environement.dto.travellogs.TravellogDtoResponse;
-import org.example.environement.entity.Observation;
 import org.example.environement.service.ObservationService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
